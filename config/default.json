@@ -1,0 +1,5 @@
+{
+    "letsencrypt": {
+        "path": "/etc/letsencrypt/"
+    }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "customer-dns-lookup",
+  "version": "0.0.1",
+  "description": "This tool goes through the letsencrypt domains and checks whether the respective domains still point to the correct system.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexohneander/customer-dns-lookup.git"
+  },
+  "keywords": [
+    "dns",
+    "lookup",
+    "letsencrypt",
+    "nodejs",
+    "node"
+  ],
+  "author": "Alex Wellnitz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexohneander/customer-dns-lookup/issues"
+  },
+  "homepage": "https://github.com/alexohneander/customer-dns-lookup#readme",
+  "dependencies": {
+    "config": "^3.3.7"
+  }
+}
