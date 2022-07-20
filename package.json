@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/alexohneander/customer-dns-lookup#readme",
   "dependencies": {
-    "config": "^3.3.7"
+    "config": "^3.3.7",
+    "winston": "^3.8.1"
   }
 }

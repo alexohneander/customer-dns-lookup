@@ -2,10 +2,31 @@ const config = require('config');
 const path = require('path');
 const dns = require('dns');
 const fs = require('fs');
+const winston = require('winston');
+
+
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+        winston.format.json(),
+        winston.format.colorize(),
+        winston.format.timestamp()
+    ),
+    transports: [
+        //
+        // - Write all logs with importance level of `error` or less to `error.log`
+        new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    ],
+});
+
+if (process.env.NODE_ENV !== 'production') {
+    logger.add(new winston.transports.Console({
+        format: winston.format.simple(),
+    }));
+}
 
 // Setting options for dns.lookup() method
 const dnsLookupOptions = {
-
     // Setting family as 6 i.e. IPv6
     family: 4,
     hints: dns.ADDRCONFIG | dns.V4MAPPED,
@@ -13,7 +34,7 @@ const dnsLookupOptions = {
 
 async function startSync() {
     let domainConfigs = await getCurrentConfiguredDomains();
-    console.log(`Current configured domains: ${domainConfigs.length} \n`);
+    logger.info(`Current configured domains: ${domainConfigs.length}`);
 
     // check if domains point to the correct service ip addresses
     for (let domainConfig of domainConfigs) {
@@ -39,9 +60,9 @@ async function getCurrentConfiguredDomains() {
     return domainConfigs;
 }
 
-function getDomainsFromConfig(config) {
+async function getDomainsFromConfig(config) {
     let domains = [];
-    let lines = fs.readFileSync(config).toString().split('\n');
+    let lines = await fs.readFileSync(config).toString().split('\n');
     for (let line of lines) {
         if (line.startsWith('domains')) {
             let domainString = line.split(' ')[2];
@@ -64,9 +85,9 @@ async function getCurrentIpAddress(domain) {
         } else {
             for (address of addresses) {
                 if (config.service.addresses.includes(address)) {
-                    console.log(`${domain} is pointing to the correct ip address: ${address}`);
+                    logger.info(`${domain} is pointing to the correct ip address: ${address}`);
                 } else {
-                    console.log(`${domain} is pointing to the wrong ip address: ${address}`);
+                    logger.error(`${domain} is pointing to the wrong ip address: ${address}`);
                 }
             }
         }
