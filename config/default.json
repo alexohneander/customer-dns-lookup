@@ -1,5 +1,10 @@
 {
     "letsencrypt": {
         "path": "/etc/letsencrypt/"
+    },
+    "service": {
+        "addresses": [
+            "127.0.0.1"
+        ]
     }
 }
